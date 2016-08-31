@@ -45,6 +45,9 @@ public class Grid {
      *            Size in y dimension (row count).
      */
     public void initialize(int width, int height) {
+        if (this.cells != null) {
+            throw new IllegalStateException("Grid is already initialized");
+        }
         if (width <= 0 || height <= 0) {
             throw new IllegalArgumentException(String.format("Height and width must be greather than 0 (height: %s, width: %s)", height, width));
         }

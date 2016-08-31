@@ -241,4 +241,12 @@ public class GridTest {
             assertEquals(String.format("Column count in grid row %d", row), 5, gridList.get(row).size());
         }
     }
+
+    /**
+     * Grid may be initialized only once.
+     */
+    @Test(expected = IllegalStateException.class)
+    public void initializeOnlyOnce() {
+        this.grid.initialize(10, 10);
+    }
 }
