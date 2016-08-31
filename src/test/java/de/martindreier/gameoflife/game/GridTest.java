@@ -128,7 +128,7 @@ public class GridTest {
      * @param iterated
      *            <code>true</code> if the expected state is after an iteration.
      */
-    public void checkCellStates(Grid grid, boolean iterated) {
+    public static void checkCellStates(Grid grid, boolean iterated) {
         for (int x = 0; x < 5; x++) {
             for (int y = 0; y < 5; y++) {
                 if (iterated && (x == 2) && (y == 1 || y == 2 || y == 3)) {
@@ -152,7 +152,7 @@ public class GridTest {
     public void gridLoader() {
         GridLoader loader = new StandardTestGrid();
         Grid grid = new Grid(loader);
-        this.checkCellStates(grid, false);
+        GridTest.checkCellStates(grid, false);
     }
 
     /**
@@ -168,7 +168,7 @@ public class GridTest {
      */
     @Test
     public void initialState() {
-        this.checkCellStates(this.grid, false);
+        GridTest.checkCellStates(this.grid, false);
     }
 
     /**
@@ -178,7 +178,7 @@ public class GridTest {
     public void oneIteration() {
         GameRule standardRule = GameRule.createRule("23", "3");
         this.grid.iterate(standardRule);
-        this.checkCellStates(this.grid, true);
+        GridTest.checkCellStates(this.grid, true);
     }
 
     /**
@@ -189,7 +189,7 @@ public class GridTest {
         GameRule standardRule = GameRule.createRule("23", "3");
         this.grid.iterate(standardRule);
         this.grid.iterate(standardRule);
-        this.checkCellStates(this.grid, false);
+        GridTest.checkCellStates(this.grid, false);
     }
 
     /**
