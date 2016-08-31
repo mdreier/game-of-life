@@ -22,9 +22,9 @@ public class FixedGrid implements GridLoader {
      */
     @Override
     public void setInitialState(Grid grid) {
-        grid.set(1, 2, CellState.ALIVE);
+        grid.set(2, 1, CellState.ALIVE);
         grid.set(2, 2, CellState.ALIVE);
-        grid.set(3, 2, CellState.ALIVE);
+        grid.set(2, 3, CellState.ALIVE);
     }
 
     /**
