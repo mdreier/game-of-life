@@ -131,7 +131,7 @@ public class GridTest {
     public static void checkCellStates(Grid grid, boolean iterated) {
         for (int x = 0; x < 5; x++) {
             for (int y = 0; y < 5; y++) {
-                if (iterated && (x == 2) && (y == 1 || y == 2 || y == 3)) {
+                if ((iterated) && (x == 2) && (y == 1 || y == 2 || y == 3)) {
                     // These cells should be alive after a single iteration
                     assertEquals(String.format("Cell at (%d,%d) should be alive", x, y), CellState.ALIVE, grid.get(x, y));
                 } else if ((!iterated) && (y == 2) && (x == 1 || x == 2 || x == 3)) {

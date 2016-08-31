@@ -34,7 +34,7 @@ import de.martindreier.gameoflife.game.io.GridLoader;
 public class Grid {
 
     /**
-     * The cells in this grid.
+     * The cells in this grid (column, row).
      */
     private Cell[][] cells;
 
