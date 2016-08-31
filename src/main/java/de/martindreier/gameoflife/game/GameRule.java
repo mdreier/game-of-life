@@ -17,6 +17,11 @@ import java.util.List;
 public interface GameRule {
 
     /**
+     * Game rule for Conway's Game of Life. Cells with 2 or 3 neighbors survive, cells with 3 neighbors are born.
+     */
+    public static final GameRule CONWAY = GameRule.createRule("23", "3");
+
+    /**
      * Calculate the state of a cell based on the current number of neighbors which are alive.
      *
      * @param neighborsAlive
