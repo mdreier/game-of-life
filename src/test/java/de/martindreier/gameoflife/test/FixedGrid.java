@@ -4,7 +4,10 @@
  */
 package de.martindreier.gameoflife.test;
 
+import java.util.Optional;
+
 import de.martindreier.gameoflife.game.CellState;
+import de.martindreier.gameoflife.game.GameRule;
 import de.martindreier.gameoflife.game.Grid;
 import de.martindreier.gameoflife.game.io.GridLoader;
 
@@ -38,6 +41,14 @@ public class FixedGrid implements GridLoader {
     @Override
     public int getHeight() {
         return 5;
+    }
+
+    /**
+     * @see de.martindreier.gameoflife.game.io.GridLoader#getGameRule()
+     */
+    @Override
+    public Optional<GameRule> getGameRule() {
+        return Optional.empty();
     }
 
 }
