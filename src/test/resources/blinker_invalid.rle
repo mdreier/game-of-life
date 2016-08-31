@@ -1,0 +1,4 @@
+#C This is a simple line blinker with invalid characters in the file.
+x = 5, y = 5
+5b$b$x3o$5
+b$b!
