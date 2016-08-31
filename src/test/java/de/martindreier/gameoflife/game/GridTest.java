@@ -13,6 +13,9 @@ import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.junit.runners.JUnit4;
 
+import de.martindreier.gameoflife.game.grids.StandardTestGrid;
+import de.martindreier.gameoflife.game.io.GridLoader;
+
 /**
  * Test the game grid.
  *
@@ -125,21 +128,39 @@ public class GridTest {
      * @param iterated
      *            <code>true</code> if the expected state is after an iteration.
      */
-    public void checkCellStates(boolean iterated) {
+    public void checkCellStates(Grid grid, boolean iterated) {
         for (int x = 0; x < 5; x++) {
             for (int y = 0; y < 5; y++) {
                 if (iterated && (x == 2) && (y == 1 || y == 2 || y == 3)) {
                     // These cells should be alive after a single iteration
-                    assertEquals(String.format("Cell at (%d,%d) should be alive", x, y), CellState.ALIVE, this.grid.get(x, y));
+                    assertEquals(String.format("Cell at (%d,%d) should be alive", x, y), CellState.ALIVE, grid.get(x, y));
                 } else if ((!iterated) && (y == 2) && (x == 1 || x == 2 || x == 3)) {
                     // These cells should be alive in the initial state
-                    assertEquals(String.format("Cell at (%d,%d) should be alive", x, y), CellState.ALIVE, this.grid.get(x, y));
+                    assertEquals(String.format("Cell at (%d,%d) should be alive", x, y), CellState.ALIVE, grid.get(x, y));
                 } else {
                     // These cells should be dead
-                    assertEquals(String.format("Cell at (%d,%d) should be dead", x, y), CellState.DEAD, this.grid.get(x, y));
+                    assertEquals(String.format("Cell at (%d,%d) should be dead", x, y), CellState.DEAD, grid.get(x, y));
                 }
             }
         }
+    }
+
+    /**
+     * Test the initialization of a grid from a loader.
+     */
+    @Test
+    public void gridLoader() {
+        GridLoader loader = new StandardTestGrid();
+        Grid grid = new Grid(loader);
+        this.checkCellStates(grid, false);
+    }
+
+    /**
+     * Test the initialization of a grid from a loader.
+     */
+    @Test(expected = IllegalArgumentException.class)
+    public void gridLoaderNull() {
+        new Grid(null);
     }
 
     /**
@@ -147,7 +168,7 @@ public class GridTest {
      */
     @Test
     public void initialState() {
-        this.checkCellStates(false);
+        this.checkCellStates(this.grid, false);
     }
 
     /**
@@ -157,7 +178,7 @@ public class GridTest {
     public void oneIteration() {
         GameRule standardRule = GameRule.createRule("23", "3");
         this.grid.iterate(standardRule);
-        this.checkCellStates(true);
+        this.checkCellStates(this.grid, true);
     }
 
     /**
@@ -168,7 +189,7 @@ public class GridTest {
         GameRule standardRule = GameRule.createRule("23", "3");
         this.grid.iterate(standardRule);
         this.grid.iterate(standardRule);
-        this.checkCellStates(false);
+        this.checkCellStates(this.grid, false);
     }
 
     /**
@@ -247,6 +268,7 @@ public class GridTest {
      */
     @Test(expected = IllegalStateException.class)
     public void initializeOnlyOnce() {
-        this.grid.initialize(10, 10);
+        Grid grid = new Grid(5, 5);
+        grid.initialize(10, 10);
     }
 }

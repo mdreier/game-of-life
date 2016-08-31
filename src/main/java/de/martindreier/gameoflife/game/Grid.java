@@ -22,6 +22,8 @@ import java.util.List;
 import java.util.Set;
 import java.util.stream.Stream;
 
+import de.martindreier.gameoflife.game.io.GridLoader;
+
 /**
  * The game grid. Holds an array of {@link Cell Cells} and access methods for it. The grid's coordinate system is
  * centered at the top left corner, i.e. the top left cell is (0,0).
@@ -35,6 +37,37 @@ public class Grid {
      * The cells in this grid.
      */
     private Cell[][] cells;
+
+    /**
+     * Create an uninitialized grid.
+     */
+    public Grid() {
+        // Empty constructor
+    }
+
+    /**
+     * Create an empty grid with the specified dimensions.
+     *
+     * @param width
+     *            Grid width (number of cells in X dimension).
+     * @param height
+     *            Grid height (number of cells in Y dimension).
+     */
+    public Grid(int width, int height) {
+        this();
+        this.initialize(width, height);
+    }
+
+    /**
+     * Create a grid and initialize it from the grid loader.
+     *
+     * @param loader
+     *            Grid loader to specify grid dimensions and initial content.
+     */
+    public Grid(GridLoader loader) {
+        this();
+        this.initialize(loader);
+    }
 
     /**
      * Initialize an empty grid with the specified dimensions.
@@ -64,6 +97,20 @@ public class Grid {
 
         // Update neighbor information
         this.updateNeighbors();
+    }
+
+    /**
+     * Initialize a grid using a loader.
+     *
+     * @param loader
+     *            The grid loader.
+     */
+    public void initialize(GridLoader loader) {
+        if (loader == null) {
+            throw new IllegalArgumentException("Grid loader must not be null");
+        }
+        this.initialize(loader.getWidth(), loader.getHeight());
+        loader.setInitialState(this);
     }
 
     /**
