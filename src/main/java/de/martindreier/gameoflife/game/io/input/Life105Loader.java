@@ -204,6 +204,8 @@ public class Life105Loader implements GridLoader {
                     catch (NumberFormatException e) {
                         throw new IllegalArgumentException("Invalid definition of pattern position: " + line, e);
                     }
+                } else {
+                    throw new IllegalArgumentException("Cell block must define X and Y coordinates for pattern");
                 }
                 break;
             default:
@@ -251,6 +253,9 @@ public class Life105Loader implements GridLoader {
      */
     @Override
     public int getHeight() {
+        if (this.cellBlocks.size() == 0) {
+            return 0;
+        }
         return this.cellBlocks.get(0).pattern.size();
     }
 

@@ -13,6 +13,7 @@
 package de.martindreier.gameoflife.game.io.input;
 
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNotEquals;
 import static org.junit.Assert.assertTrue;
 
 import java.io.IOException;
@@ -27,6 +28,7 @@ import org.junit.runners.JUnit4;
 import de.martindreier.gameoflife.game.GameRule;
 import de.martindreier.gameoflife.game.Grid;
 import de.martindreier.gameoflife.game.GridTest;
+import de.martindreier.gameoflife.game.io.input.Life105Loader.CellBlock;
 import de.martindreier.gameoflife.test.util.MultiInputExceptionCatcher;
 
 /**
@@ -108,6 +110,30 @@ public class Life105LoaderTest {
     }
 
     /**
+     * Test loading of a non-life file.
+     *
+     * @throws URISyntaxException
+     * @throws IOException
+     */
+    @Test(expected = IOException.class)
+    public void loadNonLifeFile() throws URISyntaxException, IOException {
+        Path testFile = Paths.get(this.getClass().getResource("/blinker.rle").toURI());
+        new Life105Loader(testFile);
+    }
+
+    /**
+     * Test loading of a non-life file.
+     *
+     * @throws URISyntaxException
+     * @throws IOException
+     */
+    @Test(expected = IOException.class)
+    public void loadEmptyLifeFile() throws URISyntaxException, IOException {
+        Path testFile = Paths.get(this.getClass().getResource("/empty.lif").toURI());
+        new Life105Loader(testFile);
+    }
+
+    /**
      * Test parsing of comment lines.
      */
     @Test
@@ -135,6 +161,9 @@ public class Life105LoaderTest {
 
         assertTrue("Rule provided", loader.getGameRule().isPresent());
         assertEquals("Standard rule set", GameRule.CONWAY, loader.getGameRule().get());
+
+        loader.parseHashLine("#R 23/3");
+        assertNotEquals("Custom rule set", GameRule.CONWAY, loader.getGameRule().get());
     }
 
     /**
@@ -150,5 +179,47 @@ public class Life105LoaderTest {
         };
         Life105Loader loader = new Life105Loader();
         MultiInputExceptionCatcher.execute(invalidRules, rule -> loader.parseHashLine(rule), IllegalArgumentException.class);
+    }
+
+    /**
+     * Test parsing of pattern cell blocks.
+     */
+    @Test
+    public void parseBlockPosition() {
+        Life105Loader loader = new Life105Loader();
+
+        loader.parseHashLine("#P 2 4");
+        assertEquals("Block position parsed", 1, loader.getCellBlocks().size());
+
+        CellBlock block = loader.getCellBlocks().get(0);
+        assertEquals("Block X position parsed", 2, block.getX());
+        assertEquals("Block Y position parsed", 4, block.getY());
+    }
+
+    /**
+     * Test parsing of invalid rules.
+     */
+    @Test
+    public void parseInvalidBlockPositions() {
+        String[] invalidRules = new String[] { // Comments to prevent auto-format
+                "#P", //
+                "#P 3", //
+                "#P 3   4", //
+                "#P abx", //
+                "#P 3 a", //
+                "#P X 5", //
+        };
+        Life105Loader loader = new Life105Loader();
+        MultiInputExceptionCatcher.execute(invalidRules, rule -> loader.parseHashLine(rule), IllegalArgumentException.class);
+    }
+
+    /**
+     * Test return values if no patterns are parsed.
+     */
+    @Test
+    public void sizeOfEmptyFile() {
+        Life105Loader loader = new Life105Loader();
+        assertEquals("Width should be 0", 0, loader.getWidth());
+        assertEquals("Height should be 0", 0, loader.getHeight());
     }
 }
