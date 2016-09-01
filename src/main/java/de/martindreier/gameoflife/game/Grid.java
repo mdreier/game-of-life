@@ -70,6 +70,21 @@ public class Grid {
     }
 
     /**
+     * Create a grid with a specified grid size and initialize the initial state from the grid loader.
+     *
+     * @param width
+     *            Grid width (number of cells in X dimension).
+     * @param height
+     *            Grid height (number of cells in Y dimension).
+     * @param loader
+     *            Grid loader to specify grid dimensions and initial content.
+     */
+    public Grid(int width, int height, GridLoader loader) {
+        this();
+        this.initialize(width, height, loader);
+    }
+
+    /**
      * Initialize an empty grid with the specified dimensions.
      *
      * @param width
@@ -110,6 +125,29 @@ public class Grid {
             throw new IllegalArgumentException("Grid loader must not be null");
         }
         this.initialize(loader.getWidth(), loader.getHeight());
+        loader.setInitialState(this);
+    }
+
+    /**
+     * Initialize a grid width fixed dimensions using a loader. The method checks that the loaded initial state fits
+     * inside the specified grid.
+     *
+     * @param width
+     *            Size in x dimension (column count).
+     * @param height
+     *            Size in y dimension (row count).
+     *
+     * @param loader
+     *            The grid loader.
+     */
+    public void initialize(int width, int height, GridLoader loader) {
+        if (loader == null) {
+            throw new IllegalArgumentException("Grid loader must not be null");
+        }
+        if (width < loader.getWidth() || height < loader.getHeight()) {
+            throw new IllegalArgumentException("Pattern from loader does not fit into specified grid");
+        }
+        this.initialize(width, height);
         loader.setInitialState(this);
     }
 

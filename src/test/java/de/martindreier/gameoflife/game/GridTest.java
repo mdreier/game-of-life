@@ -25,6 +25,7 @@ import org.junit.runners.JUnit4;
 
 import de.martindreier.gameoflife.game.grids.StandardTestGrid;
 import de.martindreier.gameoflife.game.io.GridLoader;
+import de.martindreier.gameoflife.test.FixedGrid;
 
 /**
  * Test the game grid.
@@ -401,5 +402,13 @@ public class GridTest {
         catch (ArrayIndexOutOfBoundsException e) {
             assertTrue("Expected exception thrown", true);
         }
+    }
+
+    /**
+     * Test that the grid size is validated when initial state is loaded.
+     */
+    @Test(expected = IllegalArgumentException.class)
+    public void checkGridSize() {
+        new Grid(4, 4, new FixedGrid());
     }
 }
