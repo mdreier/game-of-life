@@ -88,7 +88,7 @@ public class Grid {
 
         // Create cell array
         for (int x = 0; x < width; x++) {
-            Cell[] column = new Cell[width];
+            Cell[] column = new Cell[height];
             for (int y = 0; y < height; y++) {
                 column[y] = new Cell();
             }

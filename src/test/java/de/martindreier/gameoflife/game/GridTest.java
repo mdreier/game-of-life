@@ -13,6 +13,8 @@
 package de.martindreier.gameoflife.game;
 
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertTrue;
+import static org.junit.Assert.fail;
 
 import java.util.List;
 
@@ -278,5 +280,126 @@ public class GridTest {
     public void initializeOnlyOnce() {
         Grid grid = new Grid(5, 5);
         grid.initialize(10, 10);
+    }
+
+    /**
+     * Check that a grid is created with the correct dimensions for irregular grids.
+     */
+    @Test
+    public void testGridDimensions() {
+        Grid grid = new Grid(5, 2);
+
+        // Check inside corners
+        grid.set(0, 0, CellState.ALIVE);
+        assertEquals("Grid cell set correctly", CellState.ALIVE, grid.get(0, 0));
+        grid.set(4, 1, CellState.ALIVE);
+        assertEquals("Grid cell set correctly", CellState.ALIVE, grid.get(4, 1));
+
+        // Check outside of field
+        try {
+            grid.set(4, 2, CellState.ALIVE);
+            fail("Cells outside grid dimensions were reachable");
+        }
+        catch (ArrayIndexOutOfBoundsException e) {
+            assertTrue("Expected exception thrown", true);
+        }
+
+        try {
+            grid.set(5, 1, CellState.ALIVE);
+            fail("Cells outside grid dimensions were reachable");
+        }
+        catch (ArrayIndexOutOfBoundsException e) {
+            assertTrue("Expected exception thrown", true);
+        }
+
+        try {
+            grid.set(5, 2, CellState.ALIVE);
+            fail("Cells outside grid dimensions were reachable");
+        }
+        catch (ArrayIndexOutOfBoundsException e) {
+            assertTrue("Expected exception thrown", true);
+        }
+
+        try {
+            grid.set(0, -1, CellState.ALIVE);
+            fail("Cells outside grid dimensions were reachable");
+        }
+        catch (ArrayIndexOutOfBoundsException e) {
+            assertTrue("Expected exception thrown", true);
+        }
+
+        try {
+            grid.set(-1, 0, CellState.ALIVE);
+            fail("Cells outside grid dimensions were reachable");
+        }
+        catch (ArrayIndexOutOfBoundsException e) {
+            assertTrue("Expected exception thrown", true);
+        }
+
+        try {
+            grid.set(-1, -1, CellState.ALIVE);
+            fail("Cells outside grid dimensions were reachable");
+        }
+        catch (ArrayIndexOutOfBoundsException e) {
+            assertTrue("Expected exception thrown", true);
+        }
+
+        // Try again, this time other dimensions
+        grid = new Grid(3, 7);
+
+        // Check inside corners
+        grid.set(0, 0, CellState.ALIVE);
+        assertEquals("Grid cell set correctly", CellState.ALIVE, grid.get(0, 0));
+        grid.set(2, 6, CellState.ALIVE);
+        assertEquals("Grid cell set correctly", CellState.ALIVE, grid.get(2, 6));
+
+        // Check outside of field
+        try {
+            grid.set(3, 6, CellState.ALIVE);
+            fail("Cells outside grid dimensions were reachable");
+        }
+        catch (ArrayIndexOutOfBoundsException e) {
+            assertTrue("Expected exception thrown", true);
+        }
+
+        try {
+            grid.set(2, 7, CellState.ALIVE);
+            fail("Cells outside grid dimensions were reachable");
+        }
+        catch (ArrayIndexOutOfBoundsException e) {
+            assertTrue("Expected exception thrown", true);
+        }
+
+        try {
+            grid.set(3, 7, CellState.ALIVE);
+            fail("Cells outside grid dimensions were reachable");
+        }
+        catch (ArrayIndexOutOfBoundsException e) {
+            assertTrue("Expected exception thrown", true);
+        }
+
+        try {
+            grid.set(0, -1, CellState.ALIVE);
+            fail("Cells outside grid dimensions were reachable");
+        }
+        catch (ArrayIndexOutOfBoundsException e) {
+            assertTrue("Expected exception thrown", true);
+        }
+
+        try {
+            grid.set(-1, 0, CellState.ALIVE);
+            fail("Cells outside grid dimensions were reachable");
+        }
+        catch (ArrayIndexOutOfBoundsException e) {
+            assertTrue("Expected exception thrown", true);
+        }
+
+        try {
+            grid.set(-1, -1, CellState.ALIVE);
+            fail("Cells outside grid dimensions were reachable");
+        }
+        catch (ArrayIndexOutOfBoundsException e) {
+            assertTrue("Expected exception thrown", true);
+        }
     }
 }
